@@ -12,6 +12,7 @@ pipeline {
                 stage('Dotnet Build'){
                     steps{
                       sh 'dotnet build'
+                      
                     }
                 }
                 stage('Dotnet Test'){
@@ -44,6 +45,7 @@ pipeline {
                         steps {
                     dir ('DotnetTemplate.Web') {
                            sh 'npm t'
+                           slackSend color: "good", message: "Message from Jenkins Pipeline"
                            }
                        }}
                     }
