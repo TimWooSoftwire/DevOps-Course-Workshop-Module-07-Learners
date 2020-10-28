@@ -8,15 +8,14 @@ pipeline {
             environment {
                 DOTNET_CLI_HOME = '/tmp/DOTNET_CLI_HOME'
             }
-            stages{
-                stage('Dotnet Build'){
-                    steps{
-                      sh 'dotnet build'
-                      
+            stages {
+                stage('Dotnet Build') {
+                    steps {
+                        sh 'dotnet build'
                     }
                 }
-                stage('Dotnet Test'){
-                    steps{
+                stage('Dotnet Test') {
+                    steps {
                         sh 'dotnet test'
                     }
                 }
@@ -29,26 +28,38 @@ pipeline {
             stages {
                 stage('TypeScript build') {
                     steps {
-                       dir ('DotnetTemplate.Web') {
-                       sh 'node --version'
-                       sh 'npm install'
-                       sh 'npm run build'
+                        dir ('DotnetTemplate.Web') {
+                            sh 'node --version'
+                            sh 'npm install'
+                            sh 'npm run build'
+                        }
                     }
-                    }}
+                }
                 stage('TypeScript linting') {
                         steps {
-                    dir ('DotnetTemplate.Web') {
+                        dir ('DotnetTemplate.Web') {
                             sh 'npm run lint'
-                            }
-                    }}
+                        }
+                    }
+                }
                 stage('TypeScript tests') {
                         steps {
-                    dir ('DotnetTemplate.Web') {
-                           sh 'npm t'
-                           slackSend color: "good", message: "Message from Jenkins Pipeline"
-                           }
-                       }}
+                        dir ('DotnetTemplate.Web') {
+                            sh 'npm t'
+                            
+                        }
                     }
                 }
             }
         }
+    }
+    post {
+        success {
+            slackSend color: 'good', message: 'Yippeee :partyparrot:'
+        }
+        failure {
+            slackSend color: 'danger', message: 'You failed :sob: '
+        }
+    }
+}
+
