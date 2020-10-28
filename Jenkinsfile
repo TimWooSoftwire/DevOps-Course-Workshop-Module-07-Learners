@@ -7,6 +7,8 @@ pipeline {
             }
             steps {
                 sh 'dotnet --version'
+                sh 'dotnet build'
+                sh 'dotnet test'
             }
         }
         stage('TypeScript') {
@@ -14,7 +16,13 @@ pipeline {
                 docker { image 'node:14-alpine' }
             }
             steps {
-                sh 'node --version'
+                dir ("DotnetTemplate.Web") {
+                    sh 'node --version'
+                    sh 'npm install'
+                    sh 'npm run build'
+                    sh 'npm run lint'
+                    sh 'npm t'
+                 }
             }
         }
     }
