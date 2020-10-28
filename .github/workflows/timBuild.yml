@@ -9,7 +9,7 @@ jobs:
     - uses: actions/checkout@v2 # Checkout code
     
     - name: Builds the C# code       
-      run: dotnet buildsdf              
+      run: dotnet build              
        
     - name: Runs the C# tests       
       run: dotnet test              
