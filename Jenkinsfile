@@ -20,29 +20,26 @@ pipeline {
             }
             stages {
                 stage('TypeScript build') {
-                    dir ('DotnetTemplate.Web') {
-                        steps {
-                            sh 'node --version'
-                            sh 'npm install'
-                            sh 'npm run build'
-                            }
-                        }
+                    steps {
+                       dir ('DotnetTemplate.Web') {
+                       sh 'node --version'
+                       sh 'npm install'
+                       sh 'npm run build'
                     }
+                    }}
                 stage('TypeScript linting') {
-                    dir ('DotnetTemplate.Web') {
                         steps {
+                    dir ('DotnetTemplate.Web') {
                             sh 'npm run lint'
                             }
-                       }
-                    }
+                    }}
                 stage('TypeScript tests') {
-                    dir ('DotnetTemplate.Web') {
                         steps {
+                    dir ('DotnetTemplate.Web') {
                            sh 'npm t'
                            }
-                       }
+                       }}
                     }
                 }
             }
         }
-    }
