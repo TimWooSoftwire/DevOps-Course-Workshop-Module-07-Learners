@@ -17,8 +17,8 @@ jobs:
     - name: Builds the typescript code.       # Name of step
       working-directory: ./DotnetTemplate.Web
       run: | 
-      npm install              # Command to runs-on 
-      npm run build
+        npm install              
+        npm run build
      
     - name: Runs the linter on the typescript code.       # Name of step
       working-directory: ./DotnetTemplate.Web
