@@ -8,10 +8,17 @@ pipeline {
             environment {
                 DOTNET_CLI_HOME = '/tmp/DOTNET_CLI_HOME'
             }
-            steps {
-                sh 'dotnet --version'
-                sh 'dotnet build'
-                sh 'dotnet test'
+            stages{
+                stage('Dotnet Build'){
+                    steps{
+                      sh 'dotnet build'
+                    }
+                }
+                stage('Dotnet Test'){
+                    steps{
+                        sh 'dotnet test'
+                    }
+                }
             }
         }
         stage('TypeScript') {
