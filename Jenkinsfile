@@ -18,14 +18,31 @@ pipeline {
             agent {
                 docker { image 'node:14-alpine' }
             }
-            steps {
-                dir ("DotnetTemplate.Web") {
-                    sh 'node --version'
-                    sh 'npm install'
-                    sh 'npm run build'
-                    sh 'npm run lint'
-                    sh 'npm t'
-                 }
+            stages{
+                stage('TypeScript build'){
+                    dir ("DotnetTemplate.Web"){
+                        steps{
+                            sh 'node --version'
+                            sh 'npm install'
+                            sh 'npm run build'
+                            }
+                        }
+                    }
+                stage('TypeScript linting'){
+                    dir ("DotnetTemplate.Web"){
+                        steps{
+                            sh 'npm run lint'
+                            }
+                       }
+                    }
+                stage('TypeScript tests'){
+                    dir ("DotnetTemplate.Web"){
+                        steps{
+                           sh 'npm t'
+                           }
+                       }
+                    }
+                }
             }
         }
     }
