@@ -10,6 +10,23 @@ jobs:
     
     - name: Builds the C# code       # Name of step
       run: dotnet build              # Command to run
+       
+    - name: Runs the C# tests       # Name of step
+      run: dotnet test               # Command to run
+       
+    - name: Builds the typescript code.       # Name of step
+      working-directory: ./DotnetTemplate.Web
+      run: | 
+      npm install              # Command to runs-on 
+      npm run build
+     
+    - name: Runs the linter on the typescript code.       # Name of step
+      working-directory: ./DotnetTemplate.Web
+      run: npm run lint              # Command to runs-on 
+      
+    - name: Runs the typescript tests       # Name of step
+      working-directory: ./DotnetTemplate.Web
+      run: npm t                            # Command to runs-on
       
     
     
