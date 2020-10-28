@@ -8,59 +8,59 @@ jobs:
     steps:
     - uses: actions/checkout@v2 # Checkout code
     
-    - name: Builds the C# code       
-      run: dotnet build              
-       
-    - name: Runs the C# tests       
-      run: dotnet test              
-       
-    - name: Builds the typescript code.     
-      working-directory: ./DotnetTemplate.Web
-      run: | 
-        npm install              
-        npm run build
-     
-    - name: Runs the linter on the typescript code.       
-      working-directory: ./DotnetTemplate.Web
-      run: npm run lint           
-      
-    - name: Runs the typescript tests       
-      working-directory: ./DotnetTemplate.Web
-      run: npm t     
-
+  #  - name: Builds the C# code       
+  #    run: dotnet build              
+  #     
+  #  - name: Runs the C# tests       
+  #    run: dotnet test              
+  #     
+  #  - name: Builds the typescript code.     
+  #    working-directory: ./DotnetTemplate.Web
+  #    run: | 
+  #      npm install              
+  #      npm run build
+  #   
+  #  - name: Runs the linter on the typescript code.       
+  #    working-directory: ./DotnetTemplate.Web
+  #    run: npm run lint           
+  #    
+  #  - name: Runs the typescript tests       
+  #    working-directory: ./DotnetTemplate.Web
+  #    run: npm t     
+#
     - uses: 8398a7/action-slack@v3
-    with:
-      status: custom
-      fields: workflow,job,commit,repo,ref,author,took
-      custom_payload: |
-        {
-          username: 'action-slack',
-          icon_emoji: ':partyparrot:',
-          attachments: [{
-            color: '${{ job.status }}' === 'success' ? 'good' : '${{ job.status }}' === 'failure' ? 'danger' : 'warning',
-            text: `${process.env.AS_WORKFLOW}\n${process.env.AS_JOB} (${process.env.AS_COMMIT}) of ${process.env.AS_REPO}@${process.env.AS_REF} by ${process.env.AS_AUTHOR} succeeded in ${process.env.AS_TOOK}`,
-          }]
-        }
-    env:
-      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}   
-    if: success()    
-    
+      with:
+        status: custom
+        fields: workflow,job,commit,repo,ref,author,took
+        custom_payload: |
+          {
+            username: 'action-slack',
+            icon_emoji: ':partyparrot:',
+            attachments: [{
+              color: '${{ job.status }}' === 'success' ? 'good' : '${{ job.status }}' === 'failure' ? 'danger' : 'warning',
+              text: `${process.env.AS_WORKFLOW}\n${process.env.AS_JOB} (${process.env.AS_COMMIT}) of ${process.env.AS_REPO}@${process.env.AS_REF} by ${process.env.AS_AUTHOR} succeeded in ${process.env.AS_TOOK}`,
+            }]
+          }
+      env:
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}   
+      if: success()    
+  
     - uses: 8398a7/action-slack@v3
-    with:
-      status: custom
-      fields: workflow,job,commit,repo,ref,author,took
-      custom_payload: |
-        {
-          username: 'action-slack',
-          icon_emoji: ':sob:',
-          attachments: [{
-            color: '${{ job.status }}' === 'success' ? 'good' : '${{ job.status }}' === 'failure' ? 'danger' : 'warning',
-            text: `${process.env.AS_WORKFLOW}\n${process.env.AS_JOB} (${process.env.AS_COMMIT}) of ${process.env.AS_REPO}@${process.env.AS_REF} by ${process.env.AS_AUTHOR} succeeded in ${process.env.AS_TOOK}`,
-          }]
-        }
-    env:
-      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}   
-    if: success()    
+      with:
+        status: custom
+        fields: workflow,job,commit,repo,ref,author,took
+        custom_payload: |
+          {
+            username: 'action-slack',
+            icon_emoji: ':sob:',
+            attachments: [{
+              color: '${{ job.status }}' === 'success' ? 'good' : '${{ job.status }}' === 'failure' ? 'danger' : 'warning',
+              text: `${process.env.AS_WORKFLOW}\n${process.env.AS_JOB} (${process.env.AS_COMMIT}) of ${process.env.AS_REPO}@${process.env.AS_REF} by ${process.env.AS_AUTHOR} succeeded in ${process.env.AS_TOOK}`,
+            }]
+          }
+      env:
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}   
+      if: success()    
       
   # - uses: 8398a7/action-slack@v3
   #   with:
