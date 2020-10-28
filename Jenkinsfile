@@ -55,10 +55,10 @@ pipeline {
     }
     post {
         success {
-            slackSend color: 'good', message: 'Yippeee :partyparrot: ${env.BUILD_URL} by ${env.GIT_COMMITTER_NAME}'
+            slackSend color: 'good', message: "Yippeee :partyparrot: ${env.BUILD_URL} by ${env.GIT_COMMITTER_NAME}"
         }
         failure {
-            slackSend color: 'danger', message: '${env.GIT_COMMITTER_NAME} failed :sob: ${env.BUILD_URL}'
+            slackSend color: 'danger', message: "${env.GIT_COMMITTER_NAME} failed :sob: ${env.BUILD_URL}"
         }
     }
 }
