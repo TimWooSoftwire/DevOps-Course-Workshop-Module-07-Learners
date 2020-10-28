@@ -38,7 +38,7 @@ jobs:
             icon_emoji: ':partyparrot:',
             attachments: [{
               color: '${{ job.status }}' === 'success' ? 'good' : '${{ job.status }}' === 'failure' ? 'danger' : 'warning',
-              text: ${process.env.AS_COMMIT} from  ${process.env.AS_REPO} by ${process.env.AS_AUTHOR} is happy! Yippee!!!
+              text: `${process.env.AS_COMMIT} from  ${process.env.AS_REPO} by ${process.env.AS_AUTHOR} is happy! Yippee!!!`,
             }]
           }
       env:
@@ -55,7 +55,7 @@ jobs:
             icon_emoji: ':sob:',
             attachments: [{
               color: '${{ job.status }}' === 'success' ? 'good' : '${{ job.status }}' === 'failure' ? 'danger' : 'warning',
-              text: ${process.env.AS_COMMIT} from ${process.env.AS_REPO} by ${process.env.AS_AUTHOR} is sad! Boo!!!,
+              text: `${process.env.AS_COMMIT} from ${process.env.AS_REPO} by ${process.env.AS_AUTHOR} is sad! Boo!!!`,
             }]
           }
       env:
