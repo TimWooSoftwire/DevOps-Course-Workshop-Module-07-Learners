@@ -27,28 +27,6 @@ jobs:
     - name: Runs the typescript tests       
       working-directory: ./DotnetTemplate.Web
       run: npm t    
-      
-    - name: Docker hub login
-      uses: docker/login-action@v1
-      with:
-        username: ${{secrets.DOCKER_HUB_USERNAME}}
-        password: ${{secrets.DOCKER_HUB_ACCESS_TOKEN}}
-
-    - name: Set up Docker Buildx
-      id: buildx
-      uses: docker/setup-buildx-action@v1
-
-    - name: Build and push
-      id: docker_build
-      uses: docker/build-push-action@v2
-      with:
-        context: ./
-        file: ./Dockerfile
-        push: true
-        tags: beckycarter/dotnettemplate:thing-${{github.sha}},latest
-
-    - name: Image digest
-      run: echo ${{ steps.docker_build.outputs.digest }}
 
     - uses: 8398a7/action-slack@v3
       with:
@@ -84,7 +62,52 @@ jobs:
         SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} 
         MATRIX_CONTEXT: ${{ toJson(matrix) }} 
       if: failure()    
-        
+
+  deploy-to-docker:    
+    name: Deploy to Docker
+    runs-on: ubuntu-latest 
+    needs: build
+    steps:
+      - name: Docker hub login
+        uses: docker/login-action@v1
+        with:
+          username: ${{secrets.DOCKER_HUB_USERNAME}}
+          password: ${{secrets.DOCKER_HUB_ACCESS_TOKEN}}
+
+      - name: Cache Docker layers
+        uses: actions/cache@v2
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          restore-keys:
+            ${{ runner.os }}-buildx-
+
+      - name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Build and push
+        id: docker_build
+        uses: docker/build-push-action@v2
+        if: github.ref == 'refs/heads/master'
+        with:
+          context: ./
+          file: ./Dockerfile
+          builder: ${{ steps.buildx.outputs.name }}
+          push: true
+          tags: beckycarter/dotnettemplate:thing-${{github.sha}}
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache
+          
+      - name: Image digest
+        run: echo ${{ steps.docker_build.outputs.digest }}
+
+
+
+
+
+
+
   # - uses: 8398a7/action-slack@v3
   #   with:
   #     status: ${{ job.status }}
