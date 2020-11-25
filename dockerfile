@@ -21,3 +21,4 @@ COPY --from=builder /thing .
 EXPOSE 5000
 
 ENTRYPOINT ["dotnet", "run"]
+
