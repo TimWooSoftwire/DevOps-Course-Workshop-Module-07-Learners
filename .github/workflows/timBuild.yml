@@ -45,7 +45,7 @@ jobs:
         context: ./
         file: ./Dockerfile
         push: true
-        tags: beckycarter/dotnettemplate:thing:latest:${{github.sha}}
+        tags: beckycarter/dotnettemplate:thing-latest-${{github.sha}}
 
     - name: Image digest
       run: echo ${{ steps.docker_build.outputs.digest }}
